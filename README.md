@@ -2,7 +2,7 @@
 
 ### Contributors: Brandon Liang, Dennis Lo, Stephanie Ginvoker, and  Kanupriya Agarwal.
 
-We competed in the category of "Graph Database Search and Compare (EDR)". The frontend is written in React.JS and the backend is written in Flask. The graph database solution we used was Neo4j.
+We competed in the category of "Graph Database Search and Compare (EDR)". The frontend is written in React.JS and the backend is written in Python with Flask and a Neo4j Bolt driver. The graph database solution we used was Neo4j with its Cypher query language.
 
 The problem statement was as follows:
 <blockquote>

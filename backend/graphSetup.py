@@ -3,6 +3,9 @@ from neo4j import GraphDatabase
 driver = GraphDatabase.driver('bolt://localhost:7687',auth=("neo4j","yhack19"))
 
 def _load_data(tx, message):
+
+    
+
     dataQuery = """
     LOAD CSV WITH HEADERS FROM "file:///OccupantAddresses.csv" AS row 
 WITH row.ID AS ID, row.Occupant AS Occupant, row.Address AS Address, row.City AS City, row.State AS State, row.ZipCode as ZipCode, row.FIPS as FIPS, row.Phone as Phone, row.Publisher as Publisher, row.Year as Year
