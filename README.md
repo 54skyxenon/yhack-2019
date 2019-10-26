@@ -13,14 +13,13 @@ Traditional databases (SQL Server, Oracle) are excellent at storing large tables
 There is something naturally “graphy” about addresses that we’d like to explore. A country contains a state which contains a city which contains a street on which are addresses and businesses.
 </blockquote>
 We satisfied the given requirements:
-
 <blockquote>
-<ul>
-<li>Load mailing address datasets into the graph database. </li>
-<li>Create a pattern matching algorithm to select records from the database using a single address.</li>
-<li>Create a comparison algorithm to highlight differences and similarities between two datasets.</li>
-<li>[Optional] Create a visualization of the graph.</li>
-</ul>
+	<ul>
+		<li>Load mailing address datasets into the graph database. </li>
+		<li>Create a pattern matching algorithm to select records from the database using a single address.</li>
+		<li>Create a comparison algorithm to highlight differences and similarities between two datasets.</li>
+		<li>[Optional] Create a visualization of the graph.</li>
+	</ul>
 </blockquote>
 
 We used datasets from this <a href="https://github.com/EDRInc/RaD-EdrCore-Public">GitHub repository</a>.
