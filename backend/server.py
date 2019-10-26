@@ -25,7 +25,7 @@ def close_db(error):
         g.neo4j_db.close()
 
 
-def get_query(fields):
+def get_query(fields, pg):
     query_fields = []
 
     for i in range(len(FIELDS)):
@@ -41,7 +41,8 @@ def get_query(fields):
     for i in range(2, len(FIELDS)):
         query += f', {ABRV[i]}.{FIELDS[i]}'
 
-    query = f'MATCH {query} LIMIT {LIMIT}'
+    skip = pg * LIMIT
+    query = f'MATCH {query} ORDER BY h.number, st.street, c.city SKIP {skip} LIMIT {LIMIT};'
     return query
 
 
@@ -51,10 +52,11 @@ def simple_query():
 
     f = request.form
     fields = [f['year'], f['state'], f['city'], f['street'], f['num']]
-    results = db.run(get_query(fields))
+    page = int(f['page']) if f['page'] else 0
+    results = db.run(get_query(fields, page))
 
     res = []
     for record in results:
         res.append(record)
 
-    return jsonify(res)
+    return jsonify(res) if res else None

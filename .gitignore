@@ -1,4 +1,4 @@
 .DS_Store
 
 datasets
-*.pyc
+backend/__pycache__
