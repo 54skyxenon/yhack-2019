@@ -17,8 +17,12 @@ def parse_addr(addr):
         (suite_idx, _) = suite.span()
         addr = addr[:suite_idx + 1] + addr[suite_idx + 2:]
 
+    if 'PO BOX' in addr:
+        addr = addr[7:] + addr[:7]
+
     # Replace first space with |
-    addr = '|'.join(addr.split(' ', 1))
+    if re.search('[0-9]+', addr):
+        addr = '|'.join(addr.split(' ', 1))
     return addr.strip()
 
 
