@@ -1,13 +1,14 @@
-from flask import Flask, g, Response, request
+from flask import Flask, g, jsonify, request
 from neo4j import GraphDatabase
 
-FIELDS = ['Year', 'State', 'City', 'Street', 'HouseNumber']
-ABBRV = ['y', 's', 'c', 'st', 'h']
+TYPES = ['Year', 'State', 'City', 'Street', 'HouseNumber']
+FIELDS = ['year', 'state', 'city', 'street', 'number']
+ABRV = ['y', 's', 'c', 'st', 'h']
 LIMIT = 100
 
 # To be modified
 uri = 'bolt://localhost:7687'
-driver = GraphDatabase.driver(uri, auth=("neo4j", "password"))
+driver = GraphDatabase.driver(uri, auth=("neo4j", "yhack19"))
 
 app = Flask(__name__)
 
@@ -29,23 +30,22 @@ def get_query(fields):
 
     for i in range(len(FIELDS)):
         # Field names may be incorrect
-        tmp = f'({ABVRV[i]}:{FIELDS[i]}'
+        tmp = f'({ABRV[i]}:{TYPES[i]}'
         if fields[i] != '*':
             tmp += f' {{{FIELDS[i]}: \"{fields[i]}\"}}'
         tmp += ')'
         query_fields.append(tmp)
 
     query = '-[:CONTAINS]->'.join(query_fields)
-    query += ' RETURNS s.State'
-    for i in range(1, len(FIELDS)):
-        query += f', {ABBRV[i]}.{FIELDS[i]}'
+    query += ' RETURN s.state'
+    for i in range(2, len(FIELDS)):
+        query += f', {ABRV[i]}.{FIELDS[i]}'
 
-    query += ' LIMIT ' + LIMIT
-    print(query)
-    return query;
+    query = f'MATCH {query} LIMIT {LIMIT}'
+    return query
 
 
-@app.route('/query', methods=['POST'])
+@app.route('/query', methods=['GET'])
 def simple_query():
     db = get_db()
 
@@ -53,4 +53,8 @@ def simple_query():
     fields = [f['year'], f['state'], f['city'], f['street'], f['num']]
     results = db.run(get_query(fields))
 
-    return results
+    res = []
+    for record in results:
+        res.append(record)
+
+    return jsonify(res)

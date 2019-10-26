@@ -35,7 +35,9 @@ with open(file, 'r') as f:
 
         if i > 0:
             tmp[2] = parse_addr(tmp[2])
-        rows.append(tmp)
+
+        if tmp[2]:
+            rows.append(tmp)
         i += 1
 
 
