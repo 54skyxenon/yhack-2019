@@ -1,36 +1,75 @@
-import React from 'react';
-import logo from '../logo.svg';
-import './App.css';
-import BarChart from './BarChart';
+import React from "react";
+import "./App.css";
+import Home from "./Home";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import Background from "../assets/graph-bg.png";
 
 class App extends React.Component {
   state = {
-    data: [12, 5, 6, 6, 9, 10],
-    width: 700,
-    height: 500
+    uploadPassed: false,
+    step1ButtonClicked: false,
+    step1passed: false,
+    step2ButtonClicked: false,
+    step2passed: false,
+    step3ButtonClicked: false,
+    step3passed: false,
+    step4ButtonClicked: false
+  };
+
+  setStep1Passed() {
+    this.setState({
+      step1passed: true
+    });
   }
+
+  setStep2Passed() {
+    this.setState({
+      step2passed: true
+    });
+  }
+
+  setStep3Passed() {
+    this.setState({
+      step3passed: true
+    });
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <BarChart  
-            data={this.state.data} 
-            width={this.state.width} 
-            height={this.state.height}
-          />
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <Router>
+        <div
+          style={{
+            padding: "5%",
+            backgroundImage: `url(${Background})`
+          }}
+        >
+          <nav>
+            <Link to="/">Func 1</Link>
+            <br/>
+            <Link to="/about">Func 2</Link>
+            {this.state.step1passed && <Link to="/about">Step 2 &#8594;</Link>}
+            {this.state.step2passed && <Link to="/about">Step 3 &#8594;</Link>}
+            {this.state.step3passed && <Link to="/about">Step 4</Link>}
+          </nav>
+
+          {/* A <Switch> looks through its children <Route>s and
+            renders the first one that matches the current URL. */}
+          <Switch>
+            <Route path="/">
+              <Home />
+            </Route>
+            <Route path="/about">
+              <About />
+            </Route>
+          </Switch>
+        </div>
+      </Router>
     );
   }
+}
+
+function About() {
+  return <h2>About</h2>;
 }
 
 export default App;
