@@ -7,15 +7,21 @@ export default class Home extends React.Component {
     super(props);
 
     this.state = {
-      state: 'All',
-      city: '',
-      address: '',
-      year: 2005,
+      form: {
+        state: '*',
+        city: '',
+        address: '',
+        year: 2005,
+        page: 0,
+      },
+      list: [],
     }
   }
 
-  handleChange = (e) => {
-    this.setState({ [e.target.name] : e.target.value });
+  handleChange = (event) => {
+    var form = JSON.parse(JSON.stringify(this.state.form));
+    form[event.target.name] = event.target.value.toUpperCase();
+    this.setState({ form: form });
   }
 
   handleSubmit = (event) => {
@@ -25,17 +31,15 @@ export default class Home extends React.Component {
     if(!form.checkValidity()) {
       event.stopPropagation();
     } else {
-      fetch('/query', {
-        method: 'GET',
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(this.state)
+      fetch('http://localhost:5000/query', {
+        method: 'POST',
+        body: JSON.stringify(this.state.form)
       })
         .then(res => res.json())
         .then((json) => {
-
+          this.setState({
+            list: json,
+          });
         })
         .catch((err) => {
           console.error('Something went wrong!');
@@ -52,9 +56,9 @@ export default class Home extends React.Component {
           <Form.Group controlId="state">
             <Form.Label>Pick a state</Form.Label>
             <Form.Control as="select" name="state" onChange={this.handleChange}>
-              <option>All</option>
-              <option>Massachusetts</option>
-              <option>Connecticut</option>
+              <option value="*">All</option>
+              <option value="MA">Massachusetts</option>
+              <option value="CT">Connecticut</option>
             </Form.Control>
             <Form.Text className="text-muted">
               You need to pick a state before you pick a city.
