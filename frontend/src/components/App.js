@@ -1,6 +1,8 @@
 import React from "react";
 import "./App.css";
 import Home from "./Home";
+import Compare from "./Compare";
+import Visualize from "./Visualize";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 
@@ -25,23 +27,23 @@ class App extends React.Component {
           <TabList style={{ margin: 0 }}>
             <Tab>Address Matching</Tab>
             <Tab>Compare</Tab>
+            <Tab>Visualize</Tab>
           </TabList>
           <div className="tabContent">
             <TabPanel>
               <Home />
             </TabPanel>
             <TabPanel>
-              <About />
+              <Compare />
+            </TabPanel>
+            <TabPanel>
+              <Visualize />
             </TabPanel>
           </div>
         </Tabs>
       </div>
     );
   }
-}
-
-function About() {
-  return <h2>About</h2>;
 }
 
 export default App;
