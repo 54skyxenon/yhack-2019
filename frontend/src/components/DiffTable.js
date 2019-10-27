@@ -36,17 +36,18 @@ export default class DiffTable extends React.Component {
   }
 
   render() {
+    // eslint-disable-next-line
     const processedSims = this.props.sims.map(this.arrToObject);
     const processedDiffs = this.props.diffs.map(this.arrToObject);
 
     return (
       <div>
-        <DataTable
+        {/*<DataTable
           columns={columns}
           data={processedSims}
           pagination={true}
           paginationRowsPerPageOptions={[5, 10, 25, 50, 100]}
-        />
+        />*/}
         <DataTable
           columns={columns}
           data={processedDiffs}

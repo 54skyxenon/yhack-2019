@@ -6,8 +6,8 @@ import results2010 from "../assets/2010svg.svg";
 import results2014 from "../assets/2014svg.svg";
 
 export default function Neo4jGraph(props) {
-  const { width, height} = this.props;
-  if (this.props.year === "2005") {
+  const { width, height} = props;
+  if (props.year === "2005") {
     return (
       <img
         src={results2005}
@@ -18,7 +18,7 @@ export default function Neo4jGraph(props) {
         }}
       />
     );
-  } else if (this.props.year === "2010") {
+  } else if (props.year === "2010") {
     return (
       <img
         src={results2010}
