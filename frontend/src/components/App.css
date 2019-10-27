@@ -23,3 +23,19 @@
 .App-link {
   color: #09d3ac;
 }
+
+ul {
+  display: flex;
+}
+
+li {
+  width: 100%;
+  align-items: center;
+  text-align: center;
+  font-size: 2rem;
+}
+
+.tabContent {
+  border: 1px solid #aaa;
+  border-radius: 15px;
+}
