@@ -4,6 +4,8 @@ import re
 file = 'datasets/OccupantAddresses.csv'
 rows = []
 
+def hasNumbers(inputString):
+    return any(char.isdigit() for char in inputString)
 
 def parse_addr(addr):
     # Search for apartment no
@@ -19,7 +21,11 @@ def parse_addr(addr):
 
     # Handle 'PO BOX'
     if 'PO BOX' in addr:
-        addr = addr[7:] + addr[:7]
+        addr = addr[7:] + ' ' + addr[:7]
+
+    # Handle 'Route'
+    if 'ROUTE' in addr:
+        addr = addr[6:] + ' ' + addr[:6]
 
     # Replace first space with |
     if re.search('^[0-9]+', addr):
@@ -35,10 +41,10 @@ with open(file, 'r') as f:
             tmp = []
             tmp = row.copy()
 
-            if i > 0:
+            if i > 0 and tmp[2]!="" and hasNumbers(tmp[2]):   
                 tmp[2] = parse_addr(tmp[2])
 
-            if tmp[2]:
+            if tmp[2] and hasNumbers(tmp[2]) and '|' in tmp[2]:
                 rows.append(tmp)
         i += 1
 
