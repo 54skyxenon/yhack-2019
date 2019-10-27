@@ -1,5 +1,4 @@
 .DS_Store
 
-datasets
 backend/app
 backend/__pycache__
