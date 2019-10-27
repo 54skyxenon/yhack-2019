@@ -1,5 +1,6 @@
 import React from "react";
 import { Form, Button } from "react-bootstrap";
+import DiffTable from './DiffTable';
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export default class Compare extends React.Component {
@@ -35,7 +36,7 @@ export default class Compare extends React.Component {
         year1,
         year2
       };
-
+      console.log(body);
       fetch('http://localhost:5000/diff', {
         method: 'POST',
         body: JSON.stringify(body)
@@ -52,6 +53,10 @@ export default class Compare extends React.Component {
         });
     }
   };
+
+  badForm = () => {
+    return (!this.state.year1 || !this.state.year2 || this.state.year2 === this.state.year1);
+  }
 
   handleChange = (e) => {
     if (e.target.value !== "Select a year...") {
@@ -77,7 +82,7 @@ export default class Compare extends React.Component {
             </Form.Control>
           </Form.Group>
           <Form.Group controlId="ControlSelect2">
-            <Form.Label>Year 2 (must be different from Year 1)</Form.Label>
+            <Form.Label>Year 2</Form.Label>
             <Form.Control as="select" name="year2" onChange={this.handleChange}>
               <option>Select a year...</option>
               <option>2005</option>
@@ -89,10 +94,16 @@ export default class Compare extends React.Component {
           <Button
             variant="primary"
             type="submit"
+            disabled={this.badForm()}
             onClick={this.handleSubmit}
           >
             See the Difference!
           </Button>
+          {
+            this.state.diff &&
+            this.state.sims &&
+            <DiffTable diffs={this.state.diff} sims={this.state.sim} />
+          }
         </Form>
       </div>
     );

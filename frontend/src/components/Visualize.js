@@ -1,8 +1,7 @@
 import React from "react";
 import { Form, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Neo4jPicture from './Neo4jPicture';
-
+import Neo4jGraph from "./Neo4jGraph";
 
 export default class Visualize extends React.Component {
   constructor(props) {
@@ -43,16 +42,16 @@ export default class Visualize extends React.Component {
               <option>2014</option>
             </Form.Control>
           </Form.Group>
-          <Button
-            variant="primary"
-            type="submit"
-            disabled={this.formInvalid()}
-            onClick={this.handleSubmit}
-          >
-            Prepare to be amazed!
-          </Button>
-
-
+          
+          {this.state.selectedYear && (
+            <Neo4jGraph
+              width={1000}
+              height={1000}
+              containerId={"id1"}
+              year={this.state.selectedYear}
+              backgroundColor={"#b2beb5"}
+            />
+          )}
         </Form>
       </div>
     );
