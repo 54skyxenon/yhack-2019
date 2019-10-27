@@ -1,6 +1,14 @@
 import React from "react";
 import { Form, Button } from "react-bootstrap";
+import Pagination from './Pagination';
 import "bootstrap/dist/css/bootstrap.min.css";
+
+const queryExample = [['MA', 'PITTSFIELD', 'W CENTER ST', '10'],
+                      ['MA', 'PITTSFIELD', 'W END AVE', '10'],
+                      ['MA', 'PITTSFIELD', 'W JOHNSON AVE', '10'],
+                      ['MA', 'PITTSFIELD', 'W KENOSIA AVE', '10'],
+                      ['MA', 'PITTSFIELD', 'W MAIN ST', '10'],
+                    ['CT', 'NEW HAVEN', 'ASdasdadasasd', '10']];
 
 export default class Home extends React.Component {
   constructor(props) {
@@ -49,9 +57,12 @@ export default class Home extends React.Component {
               <option>2014</option>
             </Form.Control>
           </Form.Group>
+          {/*
           <Button variant="primary" type="submit" onClick={this.handleSubmit}>
-            Move to Step 2
-          </Button>
+            Continue
+          </Button> */}
+
+          <Pagination query={queryExample} />
         </Form>
       </div>
     );
