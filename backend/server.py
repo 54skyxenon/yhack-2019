@@ -1,16 +1,21 @@
+import json
+import re
+
 from flask import Flask, g, jsonify, request
+from flask_cors import CORS
 from neo4j import GraphDatabase
 
 TYPES = ['State', 'City', 'Street', 'HouseNumber']
 FIELDS = ['state', 'city', 'street', 'number']
 ABRV = ['s', 'c', 'st', 'h']
-LIMIT = 100
+LIMIT = 50
 
-# To be modified
-uri = 'bolt://localhost:7687'
+uri = 'bolt://34.95.39.76:7687'
+# uri = 'bolt://localhost:7687'
 driver = GraphDatabase.driver(uri, auth=("neo4j", "yhack19"))
 
 app = Flask(__name__)
+CORS(app)
 
 
 class InvalidUsage(Exception):
@@ -63,14 +68,36 @@ def query(fields, year, page):
     return query
 
 
-@app.route('/query', methods=['GET'])
+def parse_addr(addr):
+    num = ''
+    street = ''
+    addr = addr.split(' ')
+
+    if 'PO BOX' in addr:
+        return (addr[2], 'PO BOX')
+
+    if addr[0] == '*':
+        if len(addr) == 1:
+            return ('*', '*')
+        return ('*', ' '.join(addr[1:]))
+
+    if re.search('^[0-9]+$', addr[0]):
+        return (addr[0], ' '.join(addr[1:]))
+
+    return ('', ' '.join(addr))
+
+
+@app.route('/query', methods=['POST'])
 def get_query():
     db = get_db()
+    f = json.loads(request.data)
 
-    f = request.form
-    fields = [f['state'], f['city'], f['street'], f['num']]
-    year = int(f['year']) if f['year'] else 0
-    page = int(f['page']) if f['page'] else 0
+    # Parse street and st number from st address
+    (num, street) = parse_addr(f['address'])
+
+    fields = [f['state'], f['city'], street, num]
+    year = int(f['year'])
+    page = int(f['page'])
     results = db.run(query(fields, year, page))
 
     res = []
@@ -80,26 +107,28 @@ def get_query():
     return jsonify(res)
 
 
-@app.route('/diff', methods=['GET'])
+@app.route('/diff', methods=['POST'])
 def diff_query():
     db = get_db()
-
     f = request.form
-    fields = [f['state'], f['city'], f['street'], f['num']]
-    page = 0
 
-    y1 = int(f['year1']) if f['year1'] else 0
-    y2 = int(f['year2']) if f['year2'] else 0
+    (num, street) = parse_addr(f['address'])
+    fields = [f['state'], f['city'], street, num]
+    page = int(f['page']) if f['page'] else 0
+
+    y1 = int(f['year1'])
+    y2 = int(f['year2'])
 
     if y1 == y2:
         raise InvalidUsage('Provide different years for address comparison!', status_code=400)
 
+    t0 = time.clock()
     set1 = {x for x in db.run(query(fields, y1, page))}
     set2 = {x for x in db.run(query(fields, y2, page))}
+    print(time.clock() - t0)
 
     res = {}
     res['sim'] = list(set1 & set2)
     res['diff'] = list(set1 ^ set2)
-    print(res)
 
     return jsonify(res)

@@ -45,7 +45,6 @@ export default class Pagination extends React.Component {
 
     return (
       <DataTable
-        title="Places"
         columns={columns}
         data={displayQuery}
         pagination={true}

@@ -1,6 +1,8 @@
 import React from "react";
 import { Form, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Neo4jPicture from './Neo4jPicture';
+
 
 export default class Visualize extends React.Component {
   constructor(props) {
@@ -30,7 +32,11 @@ export default class Visualize extends React.Component {
         <Form style={{ fontSize: "1.2rem" }}>
           <Form.Group controlId="ControlSelect1">
             <Form.Label>Pick a Year:</Form.Label>
-            <Form.Control as="select" name="selectedYear" onChange={this.handleChange}>
+            <Form.Control
+              as="select"
+              name="selectedYear"
+              onChange={this.handleChange}
+            >
               <option>Select a year...</option>
               <option>2005</option>
               <option>2010</option>
@@ -45,6 +51,8 @@ export default class Visualize extends React.Component {
           >
             Prepare to be amazed!
           </Button>
+
+
         </Form>
       </div>
     );
