@@ -1,9 +1,9 @@
 from flask import Flask, g, jsonify, request
 from neo4j import GraphDatabase
 
-TYPES = ['Year', 'State', 'City', 'Street', 'HouseNumber']
-FIELDS = ['year', 'state', 'city', 'street', 'number']
-ABRV = ['y', 's', 'c', 'st', 'h']
+TYPES = ['State', 'City', 'Street', 'HouseNumber']
+FIELDS = ['state', 'city', 'street', 'number']
+ABRV = ['s', 'c', 'st', 'h']
 LIMIT = 100
 
 # To be modified
@@ -49,24 +49,18 @@ def handle_invalid_usage(error):
 
 
 # Generate the Cypher query given fields and page
-def query(fields, pg):
-    query_fields = []
-
+def query(fields, year, page):
+    query = ''
     for i in range(len(FIELDS)):
-        # Field names may be incorrect
-        tmp = f'({ABRV[i]}:{TYPES[i]}'
+        query += f'MATCH (y:Year {{year: \'{year}\'}})-[:CONTAINS]-({ABRV[i]}:{TYPES[i]}'
         if fields[i] != '*':
-            tmp += f' {{{FIELDS[i]}: \"{fields[i]}\"}}'
-        tmp += ')'
-        query_fields.append(tmp)
+            query += f' {{{FIELDS[i]}: \'{fields[i]}\'}}'
+        query += ')\n'
 
-    query = '-[:CONTAINS]->'.join(query_fields)
-    query += ' RETURN s.state'
-    for i in range(2, len(FIELDS)):
-        query += f', {ABRV[i]}.{FIELDS[i]}'
-
-    skip = pg * LIMIT
-    query = f'MATCH {query} ORDER BY h.number, st.street, c.city SKIP {skip} LIMIT {LIMIT};'
+    skip = page * LIMIT
+    query += f'RETURN s.state AS s, c.city AS c, st.street AS st, h.number AS n '
+    query += f'ORDER BY n, st, c, s SKIP {skip} LIMIT {LIMIT};'
+    print(query)
     return query
 
 
@@ -75,9 +69,10 @@ def get_query():
     db = get_db()
 
     f = request.form
-    fields = [f['year'], f['state'], f['city'], f['street'], f['num']]
+    fields = [f['state'], f['city'], f['street'], f['num']]
+    year = int(f['year']) if f['year'] else 0
     page = int(f['page']) if f['page'] else 0
-    results = db.run(query(fields, page))
+    results = db.run(query(fields, year, page))
 
     res = []
     for record in results:
