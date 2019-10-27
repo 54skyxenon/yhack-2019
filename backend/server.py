@@ -1,6 +1,5 @@
 from flask import Flask, g, jsonify, request
 from neo4j import GraphDatabase
-import time
 
 TYPES = ['State', 'City', 'Street', 'HouseNumber']
 FIELDS = ['state', 'city', 'street', 'number']
@@ -8,7 +7,8 @@ ABRV = ['s', 'c', 'st', 'h']
 LIMIT = 50
 
 # To be modified
-uri = 'bolt://localhost:7687'
+uri = 'bolt://34.95.39.76:7687'
+# uri = 'bolt://localhost:7687'
 driver = GraphDatabase.driver(uri, auth=("neo4j", "yhack19"))
 
 app = Flask(__name__)
@@ -124,6 +124,5 @@ def diff_query():
     res = {}
     res['sim'] = list(set1 & set2)
     res['diff'] = list(set1 ^ set2)
-    print(res)
 
     return jsonify(res)
