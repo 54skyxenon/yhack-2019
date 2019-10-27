@@ -5,13 +5,20 @@ import "bootstrap/dist/css/bootstrap.min.css";
 export default class Home extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+
+    this.state = {
+      city: "",
+      address: ""
+    };
   }
+
+  handleSubmit = () => {};
 
   render() {
     return (
       <div className="App">
         <h1>Sample Text</h1>
+
         <Form style={{ fontSize: "1.2rem" }}>
           <Form.Group controlId="ControlSelect1">
             <Form.Label>Pick a state</Form.Label>
@@ -42,7 +49,7 @@ export default class Home extends React.Component {
               <option>2014</option>
             </Form.Control>
           </Form.Group>
-          <Button variant="primary" type="submit">
+          <Button variant="primary" type="submit" onClick={this.handleSubmit}>
             Move to Step 2
           </Button>
         </Form>

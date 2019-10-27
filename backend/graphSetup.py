@@ -1,13 +1,14 @@
 from neo4j import GraphDatabase
 
-driver = GraphDatabase.driver('bolt://localhost:7687',auth=("neo4j","yhack19"))
+uri = 'bolt://34.95.39.76:7687'
+driver = GraphDatabase.driver(uri, auth=("neo4j","yhack19"))
 
 def _load_data(tx, message):
 
-    
+
 
     dataQuery = """
-    LOAD CSV WITH HEADERS FROM "file:///OccupantAddresses.csv" AS row 
+    LOAD CSV WITH HEADERS FROM "file:///OccupantAddresses.csv" AS row
 WITH row.ID AS ID, row.Occupant AS Occupant, row.Address AS Address, row.City AS City, row.State AS State, row.ZipCode as ZipCode, row.FIPS as FIPS, row.Phone as Phone, row.Publisher as Publisher, row.Year as Year
     MERGE (y:Year {year: Year})
     MERGE (s:State {state: State})
