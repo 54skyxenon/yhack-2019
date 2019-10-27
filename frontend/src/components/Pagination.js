@@ -26,10 +26,6 @@ const columns = [
 ];
 
 export default class Pagination extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   arrToObject(value) {
     return {
       state: value[0],

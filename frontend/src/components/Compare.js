@@ -36,7 +36,7 @@ export default class Compare extends React.Component {
         year1,
         year2
       };
-      console.log(body);
+      
       fetch('http://localhost:5000/diff', {
         method: 'POST',
         body: JSON.stringify(body)
