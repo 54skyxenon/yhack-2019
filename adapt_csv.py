@@ -31,14 +31,15 @@ i = 0
 with open(file, 'r') as f:
     reader = csv.reader(f)
     for row in reader:
-        tmp = []
-        tmp = row.copy()
+        if i%32 == 0:
+            tmp = []
+            tmp = row.copy()
 
-        if i > 0:
-            tmp[2] = parse_addr(tmp[2])
+            if i > 0:
+                tmp[2] = parse_addr(tmp[2])
 
-        if tmp[2]:
-            rows.append(tmp)
+            if tmp[2]:
+                rows.append(tmp)
         i += 1
 
 
