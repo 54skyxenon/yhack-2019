@@ -126,7 +126,7 @@ def diff_query():
     if y1 == y2:
         raise InvalidUsage('Provide different years for address comparison!', status_code=400)
 
-    set1 = {x for x in db.run(query(fields, y1, page))}
+    set1 = {set(x) for x in db.run(query(fields, y1, page))}
     set2 = {x for x in db.run(query(fields, y2, page))}
 
     res = {}
