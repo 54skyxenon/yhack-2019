@@ -36,7 +36,7 @@ export default class Compare extends React.Component {
         year1,
         year2
       };
-      
+
       fetch('http://localhost:5000/diff', {
         method: 'POST',
         body: JSON.stringify(body)
@@ -99,11 +99,7 @@ export default class Compare extends React.Component {
           >
             See the Difference!
           </Button>
-          {
-            this.state.diff &&
-            this.state.sims &&
-            <DiffTable diffs={this.state.diff} sims={this.state.sim} />
-          }
+          <DiffTable diffs={this.state.diff} sims={this.state.sim} />
         </Form>
       </div>
     );
