@@ -18,6 +18,9 @@ WITH row.ID AS ID, row.Occupant AS Occupant, row.Address AS Address, row.City AS
     MERGE (s)-[r1:CONTAINS]->(c)
     MERGE (c)-[r2:CONTAINS]->(st)
     MERGE (st)-[r3:CONTAINS]->(num)
+    MERGE (y)-[r4:CONTAINS]->(c)
+    MERGE (y)-[r5:CONTAINS]->(st)
+    MERGE (y)-[r6:CONTAINS]->(num)
     """
     result = tx.run(dataQuery, message=message)
 
