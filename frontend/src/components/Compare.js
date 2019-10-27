@@ -99,11 +99,9 @@ export default class Compare extends React.Component {
           >
             See the Difference!
           </Button>
-          {
-            this.state.diff &&
-            this.state.sims &&
-            <DiffTable diffs={this.state.diff} sims={this.state.sim} />
-          }
+          
+          <DiffTable diffs={this.state.diff} sims={this.state.sim} />
+          
         </Form>
       </div>
     );
