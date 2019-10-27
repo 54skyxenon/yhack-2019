@@ -8,7 +8,7 @@ from neo4j import GraphDatabase
 TYPES = ['State', 'City', 'Street', 'HouseNumber']
 FIELDS = ['state', 'city', 'street', 'number']
 ABRV = ['s', 'c', 'st', 'h']
-LIMIT = 50
+LIMIT = 100
 
 uri = 'bolt://34.95.39.76:7687'
 # uri = 'bolt://localhost:7687'
@@ -97,7 +97,9 @@ def get_query():
 
     fields = [f['state'], f['city'], street, num]
     year = int(f['year'])
-    page = int(f['page'])
+
+    # Paginator component did not integrate with pagination feature here—no real use of page
+    page = 0
     results = db.run(query(fields, year, page))
 
     res = []
@@ -110,11 +112,13 @@ def get_query():
 @app.route('/diff', methods=['POST'])
 def diff_query():
     db = get_db()
-    f = request.form
+    f = json.loads(request.data)
 
     (num, street) = parse_addr(f['address'])
     fields = [f['state'], f['city'], street, num]
-    page = int(f['page']) if f['page'] else 0
+
+    # See comment above
+    page = 0
 
     y1 = int(f['year1'])
     y2 = int(f['year2'])
@@ -122,10 +126,8 @@ def diff_query():
     if y1 == y2:
         raise InvalidUsage('Provide different years for address comparison!', status_code=400)
 
-    t0 = time.clock()
     set1 = {x for x in db.run(query(fields, y1, page))}
     set2 = {x for x in db.run(query(fields, y2, page))}
-    print(time.clock() - t0)
 
     res = {}
     res['sim'] = list(set1 & set2)

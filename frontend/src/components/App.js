@@ -7,7 +7,29 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      state: '*',
+      city: '',
+      address: '',
+      year: 2005,
+    };
+  }
+
+  handleChange = (e) => {
+    this.setState({ [e.target.name] : e.target.value.toUpperCase() });
+  }
+
   render() {
+    const {
+      state,
+      city,
+      address,
+      year,
+    } = this.state;
+
     return (
       <div
         style={{
@@ -29,13 +51,26 @@ class App extends React.Component {
             <Tab>Compare</Tab>
             <Tab>Visualize</Tab>
           </TabList>
+
           <div className="tabContent">
             <TabPanel>
-              <Home />
+              <Home
+                state={state}
+                city={city}
+                address={address}
+                year={year}
+                handleChange={this.handleChange}
+              />
             </TabPanel>
+
             <TabPanel>
-              <Compare />
+              <Compare
+                state={state}
+                city={city}
+                address={address}
+              />
             </TabPanel>
+
             <TabPanel>
               <Visualize />
             </TabPanel>

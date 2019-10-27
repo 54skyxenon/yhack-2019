@@ -8,21 +8,8 @@ export default class Home extends React.Component {
     super(props);
 
     this.state = {
-      form: {
-        state: '*',
-        city: '',
-        address: '',
-        year: 2005,
-        page: 0,
-      },
       list: [],
     }
-  }
-
-  handleChange = (event) => {
-    var form = JSON.parse(JSON.stringify(this.state.form));
-    form[event.target.name] = event.target.value.toUpperCase();
-    this.setState({ form: form });
   }
 
   handleSubmit = (event) => {
@@ -32,9 +19,21 @@ export default class Home extends React.Component {
     if(!form.checkValidity()) {
       event.stopPropagation();
     } else {
+      const {
+        state, city, address, year
+      } = this.props;
+
+      const body = {
+        state,
+        city,
+        address,
+        year
+      };
+
+      console.log(body);
       fetch('http://localhost:5000/query', {
         method: 'POST',
-        body: JSON.stringify(this.state.form)
+        body: JSON.stringify(body)
       })
         .then(res => res.json())
         .then((json) => {
@@ -49,6 +48,10 @@ export default class Home extends React.Component {
   };
 
   render() {
+    const {
+      handleChange
+    } = this.props;
+
     return (
       <div className="App">
         <h1>Address query</h1>
@@ -56,32 +59,32 @@ export default class Home extends React.Component {
         <Form style={{ fontSize: "1.2rem", marginTop: "20px" }} onSubmit={this.handleSubmit}>
           <Form.Group controlId="state">
             <Form.Label>Pick a state</Form.Label>
-            <Form.Control as="select" name="state" onChange={this.handleChange}>
+            <Form.Control as="select" name="state" onChange={handleChange}>
               <option value="*">All</option>
               <option value="MA">Massachusetts</option>
               <option value="CT">Connecticut</option>
             </Form.Control>
             <Form.Text className="text-muted">
-              You can put * in the following fields to get everything.
+              You can use * in the following fields to match all values.
             </Form.Text>
           </Form.Group>
           <Form.Group controlId="city">
             <Form.Label>Enter city</Form.Label>
-            <Form.Control type="text" name="city" placeholder="New York City" onChange={this.handleChange} required />
+            <Form.Control type="text" name="city" placeholder="New York City" onChange={handleChange} required />
           </Form.Group>
           <Form.Group controlId="address">
             <Form.Label>Enter address</Form.Label>
-            <Form.Control type="text" name="address" placeholder="123 Sesame St"  onChange={this.handleChange} required />
+            <Form.Control type="text" name="address" placeholder="123 Sesame St"  onChange={handleChange} required />
           </Form.Group>
           <Form.Group controlId="year">
             <Form.Label>Choose year</Form.Label>
-            <Form.Control as="select" name="year" onChange={this.handleChange}>
+            <Form.Control as="select" name="year" onChange={handleChange}>
               <option>2005</option>
               <option>2010</option>
               <option>2014</option>
             </Form.Control>
           </Form.Group>
-          
+
           <Button variant="primary" type="submit" onClick={this.handleSubmit}>
             Search
           </Button>

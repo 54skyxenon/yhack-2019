@@ -7,30 +7,53 @@ export default class Compare extends React.Component {
     super(props);
     this.state = {
       year1: null,
-      year2: null
+      year2: null,
+      diff: [],
+      sim: []
     };
   }
 
-  formInvalid = () => {
-    return !this.state.year1 || !this.state.year2;
+  handleSubmit = (event) => {
+    const form = event.currentTarget;
+    event.preventDefault();
+
+    if(!form.checkValidity()) {
+      event.stopPropagation();
+    } else {
+      const {
+        state, city, address
+      } = this.props;
+
+      const {
+        year1, year2
+      } = this.state;
+
+      const body = {
+        state,
+        city,
+        address,
+        year1,
+        year2
+      };
+
+      fetch('http://localhost:5000/diff', {
+        method: 'POST',
+        body: JSON.stringify(body)
+      })
+        .then(res => res.json())
+        .then((json) => {
+          this.setState({
+            sim: json.sim,
+            diff: json.diff
+          });
+        })
+        .catch((err) => {
+          console.error('Something went wrong!');
+        });
+    }
   };
 
-  getCircularReplacer = () => {
-    const seen = new WeakSet();
-    return (key, value) => {
-      if (typeof value === "object" && value !== null) {
-        if (seen.has(value)) {
-          return;
-        }
-        seen.add(value);
-      }
-      return value;
-    };
-  };
-
-  handleSubmit = () => {};
-
-  handleChange = e => {
+  handleChange = (e) => {
     if (e.target.value !== "Select a year...") {
       this.setState({ [e.target.name]: e.target.value });
     } else {
@@ -45,7 +68,7 @@ export default class Compare extends React.Component {
 
         <Form style={{ fontSize: "1.2rem" }}>
           <Form.Group controlId="ControlSelect1">
-            <Form.Label>Year #1</Form.Label>
+            <Form.Label>Year 1</Form.Label>
             <Form.Control as="select" name="year1" onChange={this.handleChange}>
               <option>Select a year...</option>
               <option>2005</option>
@@ -54,7 +77,7 @@ export default class Compare extends React.Component {
             </Form.Control>
           </Form.Group>
           <Form.Group controlId="ControlSelect2">
-            <Form.Label>Year #2</Form.Label>
+            <Form.Label>Year 2 (must be different from Year 1)</Form.Label>
             <Form.Control as="select" name="year2" onChange={this.handleChange}>
               <option>Select a year...</option>
               <option>2005</option>
@@ -65,7 +88,6 @@ export default class Compare extends React.Component {
 
           <Button
             variant="primary"
-            disabled={this.formInvalid()}
             type="submit"
             onClick={this.handleSubmit}
           >
