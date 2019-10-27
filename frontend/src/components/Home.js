@@ -7,20 +7,19 @@ export default class Home extends React.Component {
     super(props);
 
     this.state = {
-      city: '',
-      address: '',
+      city: "",
+      address: ""
     };
   }
 
-  handleSubmit = () => {
-    
-  }
+  handleSubmit = () => {};
 
   render() {
     return (
       <div className="App">
         <h1>Sample Text</h1>
-        <Form style={{fontSize: '1.2rem'}}>
+
+        <Form style={{ fontSize: "1.2rem" }}>
           <Form.Group controlId="ControlSelect1">
             <Form.Label>Pick a state</Form.Label>
             <Form.Control as="select">
@@ -28,7 +27,9 @@ export default class Home extends React.Component {
               <option>Massachusetts</option>
               <option>Connecticut</option>
             </Form.Control>
-            <Form.Text className="text-muted">You need to pick a state before you pick a city.</Form.Text>
+            <Form.Text className="text-muted">
+              You need to pick a state before you pick a city.
+            </Form.Text>
           </Form.Group>
           <Form.Group controlId="ControlSelect2">
             <Form.Label>Pick a city</Form.Label>

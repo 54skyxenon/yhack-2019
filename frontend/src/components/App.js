@@ -5,25 +5,39 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
   render() {
     return (
       <div
         style={{
-          padding: "5%",
+          padding: "5%"
         }}
       >
-        <Tabs>
-          <TabList style={{margin: 0}}>
+        <div id="navbar">
+          <img
+            src={require("../assets/logo.jpg")}
+            className="App-logo"
+            width={480}
+            height={270}
+            alt="Graph.srch logo"
+          />
+        </div>
+        <Tabs id="main-tab-container">
+          <TabList style={{ margin: 0 }}>
             <Tab>Address Matching</Tab>
             <Tab>Compare</Tab>
           </TabList>
           <div className="tabContent">
-          <TabPanel>
-            <Home />
-          </TabPanel>
-          <TabPanel>
-            <About />
-          </TabPanel>
+            <TabPanel>
+              <Home />
+            </TabPanel>
+            <TabPanel>
+              <About />
+            </TabPanel>
           </div>
         </Tabs>
       </div>

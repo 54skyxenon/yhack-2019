@@ -6,8 +6,32 @@
   background-color: #ffffffdc;
 }
 
+#navbar {
+  height: 125px;
+  width: 100%;
+  background-color: rgb(247, 247, 247);
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.react-tabs__tab:hover { 
+  background-color: #f0f0f0;
+  -webkit-transition: background-color 200ms linear;
+  -ms-transition: background-color 200ms linear;
+  transition: background-color 200ms linear;
+}
+
+#main-tab-container {
+  padding-top: 130px;
+}
+
 .App-logo {
-  height: 40vmin;
+  margin-left: 20px;
+  margin-top: 20px;
+  width: 160px;
+  height: 90px;
+  display: block;
 }
 
 .App-header {
@@ -37,5 +61,6 @@ li {
 
 .tabContent {
   border: 1px solid #aaa;
-  border-radius: 15px;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
 }
