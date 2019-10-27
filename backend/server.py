@@ -1,10 +1,11 @@
 from flask import Flask, g, jsonify, request
 from neo4j import GraphDatabase
+import time
 
 TYPES = ['State', 'City', 'Street', 'HouseNumber']
 FIELDS = ['state', 'city', 'street', 'number']
 ABRV = ['s', 'c', 'st', 'h']
-LIMIT = 100
+LIMIT = 50
 
 # To be modified
 uri = 'bolt://34.95.39.76:7687'
@@ -63,12 +64,34 @@ def query(fields, year, page):
     return query
 
 
+def parse_addr(addr):
+    num = ''
+    street = ''
+    addr = addr.split(' ')
+
+    if 'PO BOX' in addr:
+        return (addr[2], 'PO BOX')
+
+    if addr[0] == '*':
+        if len(addr) == 1:
+            return ('*', '*')
+        return ('*', ' '.join(addr[1:]))
+
+    if re.search('^[0-9]+$', addr[0]):
+        return (addr[0], ' '.join(addr[1:]))
+
+    return ('', ' '.join(addr))
+
+
 @app.route('/query', methods=['GET'])
 def get_query():
     db = get_db()
-
     f = request.form
-    fields = [f['state'], f['city'], f['street'], f['num']]
+
+    # Parse street and st number from st address
+    (num, street) = parse_addr(f['address'])
+
+    fields = [f['state'], f['city'], street, num]
     year = int(f['year']) if f['year'] else 0
     page = int(f['page']) if f['page'] else 0
     results = db.run(query(fields, year, page))
@@ -83,10 +106,11 @@ def get_query():
 @app.route('/diff', methods=['GET'])
 def diff_query():
     db = get_db()
-
     f = request.form
-    fields = [f['state'], f['city'], f['street'], f['num']]
-    page = 0
+
+    (num, street) = parse_addr(f['address'])
+    fields = [f['state'], f['city'], street, num]
+    page = int(f['page']) if f['page'] else 0
 
     y1 = int(f['year1']) if f['year1'] else 0
     y2 = int(f['year2']) if f['year2'] else 0
