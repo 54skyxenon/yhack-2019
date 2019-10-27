@@ -8,7 +8,7 @@ def _load_data(tx, message):
 
 
     dataQuery = """
-    LOAD CSV WITH HEADERS FROM "file:///OccupantAddresses.csv" AS row
+    LOAD CSV WITH HEADERS FROM 'https://github.com/54skyxenon/yhack-2019/blob/master/datasets/OccupantAddresses-reduced.csv' AS row
 WITH row.ID AS ID, row.Occupant AS Occupant, row.Address AS Address, row.City AS City, row.State AS State, row.ZipCode as ZipCode, row.FIPS as FIPS, row.Phone as Phone, row.Publisher as Publisher, row.Year as Year
     MERGE (y:Year {year: Year})
     MERGE (s:State {state: State})

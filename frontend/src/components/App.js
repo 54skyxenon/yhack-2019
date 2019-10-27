@@ -5,14 +5,6 @@ import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import "react-tabs/style/react-tabs.css";
 
 class App extends React.Component {
-<<<<<<< HEAD
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
-
-=======
->>>>>>> b77c34ce936078c9df4a737177811518109661cb
   render() {
     return (
       <div
