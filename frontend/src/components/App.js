@@ -1,8 +1,8 @@
 import React from "react";
 import "./App.css";
 import Home from "./Home";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import Background from "../assets/graph-bg.png";
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import "react-tabs/style/react-tabs.css";
 
 class App extends React.Component {
   state = {
@@ -36,34 +36,26 @@ class App extends React.Component {
 
   render() {
     return (
-      <Router>
-        <div
-          style={{
-            padding: "5%",
-            backgroundImage: `url(${Background})`
-          }}
-        >
-          <nav>
-            <Link to="/">Func 1</Link>
-            <br/>
-            <Link to="/about">Func 2</Link>
-            {this.state.step1passed && <Link to="/about">Step 2 &#8594;</Link>}
-            {this.state.step2passed && <Link to="/about">Step 3 &#8594;</Link>}
-            {this.state.step3passed && <Link to="/about">Step 4</Link>}
-          </nav>
-
-          {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
-          <Switch>
-            <Route path="/">
-              <Home />
-            </Route>
-            <Route path="/about">
-              <About />
-            </Route>
-          </Switch>
-        </div>
-      </Router>
+      <div
+        style={{
+          padding: "5%",
+        }}
+      >
+        <Tabs>
+          <TabList style={{margin: 0}}>
+            <Tab>Address Matching</Tab>
+            <Tab>Compare</Tab>
+          </TabList>
+          <div className="tabContent">
+          <TabPanel>
+            <Home />
+          </TabPanel>
+          <TabPanel>
+            <About />
+          </TabPanel>
+          </div>
+        </Tabs>
+      </div>
     );
   }
 }
