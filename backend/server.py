@@ -60,7 +60,6 @@ def query(fields, year, page):
     skip = page * LIMIT
     query += f'RETURN s.state AS s, c.city AS c, st.street AS st, h.number AS n '
     query += f'ORDER BY n, st, c, s SKIP {skip} LIMIT {LIMIT};'
-    print(query)
     return query
 
 
@@ -95,12 +94,12 @@ def diff_query():
     if y1 == y2:
         raise InvalidUsage('Provide different years for address comparison!', status_code=400)
 
-    set1 = {x for x in db.run(query([y1] + fields, page))}
-    set2 = {x for x in db.run(query([y2] + fields, page))}
+    set1 = {x for x in db.run(query(fields, y1, page))}
+    set2 = {x for x in db.run(query(fields, y2, page))}
 
     res = {}
-    res['sim'] = set1 & set2
-    res['diff'] = set1 ^ set2
+    res['sim'] = list(set1 & set2)
+    res['diff'] = list(set1 ^ set2)
     print(res)
 
     return jsonify(res)
