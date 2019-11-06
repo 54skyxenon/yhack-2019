@@ -4,7 +4,7 @@
 <img src="./frontend/src/assets/logo.jpg" />
 
 
-### Contributors: Brandon Liang (Frontend), Dennis Lo (Backend), Stephanie Ginvoker (Backend), and  Kanupriya Agarwal (UI/UX).
+### Contributors: Brandon Liang (Frontend), Dennis Lo (Backend), Stephanie Ginovker (Backend), and  Kanupriya Agarwal (UI/UX).
 
 We competed in the category of "Graph Database Search and Compare (EDR)". The frontend is written in React.JS and the backend is written in Python with Flask and a Neo4j Bolt driver. The graph database solution we used was Neo4j with its Cypher query language.
 
